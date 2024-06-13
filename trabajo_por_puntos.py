@@ -24,12 +24,48 @@ def tomar_pasaje():
     nombre_pasajero = input("Ingrese su nombre completo porfavor: ")
     try:
         while True:
-            rut_pasajero = int(input("Ingrese su rut sin puntos ni guion, si termina en k remplazala por un 0: "))
-            if rut_pasajero < 1000000:
-                print("Ingresa un valor de rut valido porfavor")
+            rut=input("Ingrese nº rut sin guión ni puntos (Ej: 10078257k): ")
+            if len(rut)==9 or len(rut)==8:
+                rut_invertido=""
+                if len(rut)==9:
+                    for i in rut:
+                        rut_invertido=i+rut_invertido
+                elif len(rut)==8:
+                    rutCompleto="0"+rut
+                    for i in rutCompleto:
+                        rut_invertido=i+rut_invertido
+                a=int(rut_invertido[1])*2
+                b=int(rut_invertido[2])*3
+                c=int(rut_invertido[3])*4
+                d=int(rut_invertido[4])*5
+                e=int(rut_invertido[5])*6
+                f=int(rut_invertido[6])*7
+                g=int(rut_invertido[7])*2
+                h=int(rut_invertido[8])*3
+                sumaRut=(a+b+c+d+e+f+g+h)/11
+                sumaRut2=int(sumaRut)
+                sumaRutfinal=(a+b+c+d+e+f+g+h)-(sumaRut2*11)
+                dig_verificador=11-sumaRutfinal
+                dig_verificador=str(dig_verificador)
+                if dig_verificador=="11":
+                    dig_verificador="0"
+                elif dig_verificador=="10":
+                    dig_verificador="k"
+
+                if len(rut)==9:
+                    if rut[8]==dig_verificador:
+                        break
+                    else: 
+                        print("Rut inválido")
+                elif len(rut)==8:
+                    if rutCompleto[8]==dig_verificador:
+                        break
+                    else: 
+                        print("Rut inválido")
+                else:
+                    print("Rut inválido")
             else:
-                print("RUT registrado con exito")
-                break
+                print("Rut inválido")
     except ValueError:
         print("Error: Ingrese un rut valido")
     try:
@@ -103,7 +139,7 @@ def tomar_pasaje():
             print("Gracias por su compra, vuelva pronto!")
             dict_datos_pasajero = {
                 "Nombre":nombre_pasajero,
-                "RUT":rut_pasajero,
+                "RUT":rut,
                 "Telefono":telefono_pasajero,
                 "Banco":banco_pasajero,
                 "Asiento":asiento_pasajero,
