@@ -79,8 +79,24 @@ def tomar_pasaje():
     else:
         pasajero_vip = "No"
 
-
-            
+    if vip == True:
+        print(f"El precio final de su pasaje con asiento VIP es de ${precio_vip}")
+    else:
+        print(f"El precio final de su pasaje con asiento normal es de ${precio_norm}")
+        
+    if banco_pasajero == "BANCO DUOC":
+        print("Se a detectado un descuento del 15% por ser socio del banco DUOC")
+        if vip == True:
+            descuento = precio_vip * 0.15
+            precio_vip_desc = precio_vip - descuento
+            print(f"El precio final de su pasaje con el descuento aplicado es de ${precio_vip_desc}")
+        else:
+            descuento = precio_norm * 0.15
+            precio_norm_desc = precio_norm - descuento
+            print(f"El precio final de su pasaje con el descuento aplicado es de ${precio_norm_desc}")
+    else:
+        print("No se detecto ningun descuento")
+        
     while True:
         opc3 = input("Desea confirmar el monto (Si/No)? ").upper()
         if opc3 == "SI":
@@ -104,11 +120,28 @@ def tomar_pasaje():
     
     return datos_pasajeros
 
-# def eliminar_pasajero():
-#     try:
-#         rut_pasajero = int(input("Ingrese el rut del pasajero que desea eliminar(Sin puntos ni guion, si termina en k remplazala por un 0): "))
-#         for diccionario in datos_pasajeros:
-#             if rut_pasajero in diccionario:
+
+def anular_vuelo():
+    try:
+        rut_pasajero = int(input("Ingrese el rut del pasajero del vuelo que desea cancelar: "))
+        asiento_pasajero = input("Ingrese el asiento correspondiente a su rut: ")
+        vuelo_encontrado = False
+        
+        for diccionario in datos_pasajeros:
+            if diccionario["RUT"] == rut_pasajero and diccionario["Asiento"] == asiento_pasajero:
+                datos_pasajeros.remove(diccionario)
+                vuelo_encontrado = True
+                for fila in asientos:
+                    if 'x' in fila:
+                        fila[fila.index('x')] = asiento_pasajero
+                print("Vuelo anulado con exito")
+                break
+        if not vuelo_encontrado:
+            print("Rut y asiento no coinciden")
+            
+                    
+    except ValueError:
+        print("Error: formato de rut invalido")
                 
         
             
@@ -119,6 +152,7 @@ while True:
     print("2. Comprar asiento")
     print("3. Anular vuelo")
     print("4. Modificar datos de pasajero")
+    print("5. Mostrar lista de pasajeros")
     print("5. Salir")
     try:
         opc = int(input("Ingrese una opcion: "))
@@ -126,14 +160,12 @@ while True:
             mostrar_asiento()
         elif opc == 2:
             tomar_pasaje()
-            
-            
         elif opc == 3:
-            print("rellenar")
+            anular_vuelo()
         elif opc == 4:
             print("rellenar")
         elif opc == 5:
-            print("rellenar") 
+            print(datos_pasajeros)
         else:
             print("Ingrese una opcion valida\n")      
     except ValueError:
